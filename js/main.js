@@ -61,10 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let yearAgoChange = 0;
-        // For 1-month data, we can't calculate 1-year ago change.
-        // This part will be relevant when we have 1-year data.
-        if (prices.length >= 365) { // Assuming 365 days for a year
-            yearAgoChange = prices[prices.length - 1] - prices[prices.length - 365];
+        // Calculate 1-year ago change if enough data is available
+        if (prices.length >= 366) { // Check for at least 366 days (current day + 365 days ago)
+            yearAgoChange = prices[prices.length - 1] - prices[prices.length - 366];
         }
 
         return { yesterdayChange, yearAgoChange };
@@ -157,13 +156,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="d-block fs-4 fw-bold ${yesterdayChange < 0 ? 'text-success' : 'text-danger'}">${yesterdayChange}円</span>
                     <small class="text-muted">昨日比</small>
                 `;
-                // Add 1-year change if data is available (currently not for 1-month dummy data)
-                // if (itemData.labels.length >= 365) {
-                //     changeDisplay.innerHTML += `
-                //         <span class="d-block fs-6 ${yearAgoChange < 0 ? 'text-success' : 'text-danger'}">${yearAgoChange}円</span>
-                //         <small class="text-muted">1年前比</small>
-                //     `;
-                // }
+                // Add 1-year change if data is available
+                if (itemData.labels.length >= 366) {
+                    changeDisplay.innerHTML += `
+                        <span class="d-block fs-6 ${yearAgoChange < 0 ? 'text-success' : 'text-danger'}">${yearAgoChange}円</span>
+                        <small class="text-muted">1年前比</small>
+                    `;
+                }
                 cardHeader.appendChild(changeDisplay);
                 cardBody.appendChild(cardHeader);
 
