@@ -1,0 +1,40 @@
+name: Update Price Data
+
+on:
+  schedule:
+    - cron: '30 7 * * *' # 毎日07:30 (UTC)に実行
+  workflow_dispatch:
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Fetch data
+        env:
+          WAGRI_API_KEY: ${{ secrets.WAGRI_API_KEY }}
+        run: python scripts/data_fetcher.py
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/prices.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Update price data"
+          git push
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
