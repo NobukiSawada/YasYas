@@ -1,14 +1,20 @@
 body {
-    font-family: sans-serif;
-    margin: 2em;
+    font-family: 'Helvetica Neue', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
 }
 
-h1 {
-    text-align: center;
+.card {
+    transition: transform 0.2s ease-in-out;
 }
 
-.chart-container {
-    width: 80%;
-    max-width: 800px;
-    margin: 2em auto;
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-title {
+    color: #333;
+    font-weight: bold;
+}
+
+footer {
+    font-size: 0.9em;
 }

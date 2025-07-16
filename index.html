@@ -3,18 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>農産物価格推移</title>
+    <title>農産物価格推移ダッシュボード</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <h1>農産物価格推移</h1>
-    <div class="chart-container">
-        <canvas id="vegetable-chart"></canvas>
-    </div>
-    <div class="chart-container">
-        <canvas id="meat-chart"></canvas>
-    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">YasYas Market Watch</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mt-4">
+        <div class="text-center mb-4">
+            <h1>農産物価格推移ダッシュボード</h1>
+            <p class="lead">WAGRIオープンデータを利用した価格動向</p>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loading" class="text-center mt-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p>データを読み込んでいます...</p>
+        </div>
+        
+        <!-- Charts (initially hidden) -->
+        <div id="charts-container" class="row d-none">
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">青果物</h5>
+                        <canvas id="vegetable-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">畜産物</h5>
+                        <canvas id="meat-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Message Area -->
+        <div id="error-message" class="alert alert-danger d-none" role="alert">
+            データの読み込みに失敗しました。時間をおいて再度お試しください。
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+        <p class="mb-0">&copy; 2024 YasYas Market Watch. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom JS -->
     <script src="js/main.js" defer></script>
 </body>
 </html>
