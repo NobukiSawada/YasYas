@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>農産物価格推移ダッシュボード</title>
+    <title>YasYas ~データから見る価格推移~</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -11,17 +13,18 @@
 <body>
 
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">YasYas Market Watch</a>
+            <a class="navbar-brand fs-4 fw-bold" href="#">YasYas</a>
         </div>
     </nav>
 
     <!-- Main Content -->
     <main class="container mt-4">
         <div class="text-center mb-4">
-            <h1>農産物価格推移ダッシュボード</h1>
+            <h1 class="display-4 fw-bold">データから見る価格推移</h1>
             <p class="lead">WAGRIオープンデータを利用した価格動向</p>
+            <p id="today-date" class="fs-5 fw-bold text-muted"></p>
         </div>
 
         <!-- Time Range Selector -->

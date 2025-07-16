@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chartsContainerEl = document.getElementById('charts-container');
     const errorEl = document.getElementById('error-message');
     const timeRangeSelector = document.getElementById('time-range-selector');
+    const todayDateEl = document.getElementById('today-date');
 
     let originalData = {};
     let chartInstances = {};
@@ -12,6 +13,27 @@ document.addEventListener('DOMContentLoaded', () => {
         '農産物': ['キャベツ', 'だいこん'],
         '畜産物': ['国産牛肉', '国産豚肉']
     };
+
+    // Chart colors for a vibrant look
+    const chartColors = [
+        '#0d6efd', // Primary blue
+        '#6610f2', // Indigo
+        '#6f42c1', // Purple
+        '#d63384', // Pink
+        '#dc3545', // Red
+        '#fd7e14', // Orange
+        '#ffc107', // Yellow
+        '#198754', // Green
+        '#20c997', // Teal
+        '#0dcaf0'  // Cyan
+    ];
+    let colorIndex = 0;
+
+    function getNextColor() {
+        const color = chartColors[colorIndex % chartColors.length];
+        colorIndex++;
+        return color;
+    }
 
     function showLoading() {
         loadingEl.classList.remove('d-none');
@@ -39,9 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         let yearAgoChange = 0;
-        // For 1-month data, we can't calculate 1-year ago change. 
+        // For 1-month data, we can't calculate 1-year ago change.
         // This part will be relevant when we have 1-year data.
-        // For now, we'll just set it to 0 or a placeholder.
         if (prices.length >= 365) { // Assuming 365 days for a year
             yearAgoChange = prices[prices.length - 1] - prices[prices.length - 365];
         }
@@ -49,9 +70,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return { yesterdayChange, yearAgoChange };
     }
 
+    function formatDateForChart(dateString, timeRange) {
+        const date = new Date(dateString);
+        if (timeRange === '7' || timeRange === '30') {
+            return `${date.getMonth() + 1}月${date.getDate()}日`;
+        } else {
+            return dateString; // YYYY-MM-DD for all or 365 days
+        }
+    }
+
     function createOrUpdateCharts(timeRange) {
         chartsContainerEl.innerHTML = ''; // Clear existing charts
         chartInstances = {};
+        colorIndex = 0; // Reset color index for new charts
 
         // Process data for each category
         for (const categoryName in categories) {
@@ -78,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create category section
             const categorySection = document.createElement('div');
             categorySection.className = 'col-12 mb-5';
-            categorySection.innerHTML = `<h2>${categoryName}</h2><hr>`;
+            categorySection.innerHTML = `<h2 class="text-primary fw-bold">${categoryName}</h2><hr>`;
             chartsContainerEl.appendChild(categorySection);
 
             const categoryRow = document.createElement('div');
@@ -100,6 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     filteredLabels = itemData.labels.slice(-days);
                     filteredPrices = itemData.prices.slice(-days);
                 }
+
+                // Format labels for chart display
+                const formattedLabels = filteredLabels.map(label => formatDateForChart(label, timeRange));
 
                 // Create container and canvas for the chart
                 const chartCol = document.createElement('div');
@@ -147,15 +181,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Create the chart
                 const ctx = canvas.getContext('2d');
+                const borderColor = getNextColor();
                 chartInstances[itemName] = new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: filteredLabels,
+                        labels: formattedLabels,
                         datasets: [{
                             label: itemName,
                             data: filteredPrices,
-                            borderColor: getRandomColor(),
-                            backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                            borderColor: borderColor,
+                            backgroundColor: `${borderColor}1A`, // 10% opacity
                             tension: 0.1,
                             fill: true
                         }]
@@ -184,6 +219,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Display today's date
+    const today = new Date();
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    todayDateEl.textContent = `今日の日付: ${today.toLocaleDateString('ja-JP', options)}`;
+
     showLoading();
 
     fetch('data/prices.json')
@@ -205,12 +245,3 @@ document.addEventListener('DOMContentLoaded', () => {
         createOrUpdateCharts(event.target.value);
     });
 });
-
-function getRandomColor() {
-    const colors = [
-        '#0d6efd', '#6610f2', '#6f42c1', '#d63384',
-        '#dc3545', '#fd7e14', '#ffc107', '#198754',
-        '#20c997', '#0dcaf0'
-    ];
-    return colors[Math.floor(Math.random() * colors.length)];
-}

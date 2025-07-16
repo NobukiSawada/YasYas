@@ -1,13 +1,29 @@
 body {
-    font-family: 'Helvetica Neue', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: #f8f9fa; /* Light gray background */
+}
+
+h1, .navbar-brand {
+    font-family: 'Mochiy Pop P One', cursive;
+    color: #0d6efd; /* Primary blue */
+}
+
+.navbar {
+    background-color: #6f42c1 !important; /* Purple */
 }
 
 .card {
-    transition: transform 0.2s ease-in-out;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    box-shadow: 8px 8px 15px #d1d1d1, -8px -8px 15px #ffffff;
 }
 
 .card:hover {
     transform: translateY(-5px);
+    box-shadow: 12px 12px 20px #c0c0c0, -12px -12px 20px #ffffff;
 }
 
 .card-title {
@@ -15,6 +31,27 @@ body {
     font-weight: bold;
 }
 
+.text-success {
+    color: #28a745 !important; /* Green for positive change */
+}
+
+.text-danger {
+    color: #dc3545 !important; /* Red for negative change */
+}
+
 footer {
     font-size: 0.9em;
+    background-color: #343a40 !important; /* Dark gray */
 }
+
+/* Custom colors for charts */
+.chart-color-1 { border-color: #0d6efd; background-color: rgba(13, 110, 253, 0.1); }
+.chart-color-2 { border-color: #6610f2; background-color: rgba(102, 16, 242, 0.1); }
+.chart-color-3 { border-color: #6f42c1; background-color: rgba(111, 66, 193, 0.1); }
+.chart-color-4 { border-color: #d63384; background-color: rgba(214, 51, 132, 0.1); }
+.chart-color-5 { border-color: #dc3545; background-color: rgba(220, 53, 69, 0.1); }
+.chart-color-6 { border-color: #fd7e14; background-color: rgba(253, 126, 20, 0.1); }
+.chart-color-7 { border-color: #ffc107; background-color: rgba(255, 193, 7, 0.1); }
+.chart-color-8 { border-color: #198754; background-color: rgba(25, 135, 84, 0.1); }
+.chart-color-9 { border-color: #20c997; background-color: rgba(32, 201, 151, 0.1); }
+.chart-color-10 { border-color: #0dcaf0; background-color: rgba(13, 202, 240, 0.1); }
