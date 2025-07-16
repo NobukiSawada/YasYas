@@ -2,101 +2,114 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingEl = document.getElementById('loading');
     const chartsContainerEl = document.getElementById('charts-container');
     const errorEl = document.getElementById('error-message');
+    const timeRangeSelector = document.getElementById('time-range-selector');
 
-    // Show loading spinner
-    loadingEl.classList.remove('d-none');
-    chartsContainerEl.classList.add('d-none');
-    errorEl.classList.add('d-none');
+    let originalData = {};
+    let chartInstances = {};
+
+    function showLoading() {
+        loadingEl.classList.remove('d-none');
+        chartsContainerEl.classList.add('d-none');
+        errorEl.classList.add('d-none');
+    }
+
+    function showCharts() {
+        loadingEl.classList.add('d-none');
+        chartsContainerEl.classList.remove('d-none');
+    }
+
+    function showError() {
+        loadingEl.classList.add('d-none');
+        errorEl.classList.remove('d-none');
+    }
+
+    function createOrUpdateCharts(timeRange) {
+        chartsContainerEl.innerHTML = ''; // Clear existing charts
+        chartInstances = {};
+
+        for (const itemName in originalData) {
+            const itemData = originalData[itemName];
+            let filteredLabels = itemData.labels;
+            let filteredPrices = itemData.prices;
+
+            if (timeRange !== 'all') {
+                const days = parseInt(timeRange, 10);
+                filteredLabels = itemData.labels.slice(-days);
+                filteredPrices = itemData.prices.slice(-days);
+            }
+
+            // Create container and canvas for the chart
+            const chartCol = document.createElement('div');
+            chartCol.className = 'col-lg-6 mb-4';
+            const chartCard = document.createElement('div');
+            chartCard.className = 'card shadow-sm h-100';
+            const cardBody = document.createElement('div');
+            cardBody.className = 'card-body d-flex flex-column';
+            const cardTitle = document.createElement('h5');
+            cardTitle.className = 'card-title';
+            cardTitle.textContent = itemName;
+            const canvasContainer = document.createElement('div');
+            canvasContainer.className = 'flex-grow-1';
+            const canvas = document.createElement('canvas');
+            const canvasId = `chart-${itemName.replace(/\s+/g, '-')}`;
+            canvas.id = canvasId;
+
+            canvasContainer.appendChild(canvas);
+            cardBody.appendChild(cardTitle);
+            cardBody.appendChild(canvasContainer);
+            chartCard.appendChild(cardBody);
+            chartCol.appendChild(chartCard);
+            chartsContainerEl.appendChild(chartCol);
+
+            // Create the chart
+            const ctx = canvas.getContext('2d');
+            chartInstances[itemName] = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: filteredLabels,
+                    datasets: [{
+                        label: itemName,
+                        data: filteredPrices,
+                        borderColor: getRandomColor(),
+                        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                        tension: 0.1,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    showLoading();
 
     fetch('data/prices.json')
         .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
         })
         .then(data => {
-            // Hide loading spinner and show charts
-            loadingEl.classList.add('d-none');
-            chartsContainerEl.classList.remove('d-none');
-
-            const vegetableData = {};
-            const meatData = {};
-
-            // Define item categories
-            const vegetableItems = ['キャベツ', 'だいこん']; // Example items
-            const meatItems = ['国産牛肉', '国産豚肉']; // Example items
-
-            for (const key in data) {
-                if (vegetableItems.includes(key)) {
-                    vegetableData[key] = data[key];
-                } else if (meatItems.includes(key)) {
-                    meatData[key] = data[key];
-                }
-            }
-
-            if (Object.keys(vegetableData).length > 0) {
-                createChart('vegetable-chart', '青果物価格', vegetableData);
-            }
-            if (Object.keys(meatData).length > 0) {
-                createChart('meat-chart', '畜産物価格', meatData);
-            }
+            originalData = data;
+            showCharts();
+            createOrUpdateCharts('all'); // Initial render
         })
         .catch(error => {
             console.error('Error fetching or parsing data:', error);
-            // Hide loading spinner and show error message
-            loadingEl.classList.add('d-none');
-            errorEl.classList.remove('d-none');
+            showError();
         });
+
+    timeRangeSelector.addEventListener('change', (event) => {
+        createOrUpdateCharts(event.target.value);
+    });
 });
-
-function createChart(canvasId, chartLabel, data) {
-    const ctx = document.getElementById(canvasId).getContext('2d');
-    
-    const datasets = Object.keys(data).map(key => {
-        return {
-            label: key,
-            data: data[key].prices,
-            borderColor: getRandomColor(),
-            backgroundColor: 'rgba(0, 0, 0, 0.05)',
-            tension: 0.1,
-            fill: true
-        };
-    });
-
-    // Use the labels from the first dataset as representative
-    const labels = data[Object.keys(data)[0]]?.labels || [];
-
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: datasets
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: false, // The card title serves as the chart title
-                }
-            },
-            scales: {
-                x: {
-                    grid: {
-                        display: false
-                    }
-                },
-                y: {
-                    beginAtZero: false
-                }
-            }
-        }
-    });
-}
 
 function getRandomColor() {
     const colors = [

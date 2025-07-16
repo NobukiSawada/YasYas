@@ -24,6 +24,21 @@
             <p class="lead">WAGRIオープンデータを利用した価格動向</p>
         </div>
 
+        <!-- Time Range Selector -->
+        <div class="row justify-content-end mb-3">
+            <div class="col-auto">
+                <label for="time-range-selector" class="col-form-label">表示期間:</label>
+            </div>
+            <div class="col-auto">
+                <select class="form-select" id="time-range-selector">
+                    <option value="all" selected>全期間</option>
+                    <option value="7">週次 (7日間)</option>
+                    <option value="30">月次 (30日間)</option>
+                    <option value="365">年次 (365日間)</option>
+                </select>
+            </div>
+        </div>
+
         <!-- Loading Spinner -->
         <div id="loading" class="text-center mt-5">
             <div class="spinner-border text-primary" role="status">
@@ -32,25 +47,8 @@
             <p>データを読み込んでいます...</p>
         </div>
         
-        <!-- Charts (initially hidden) -->
-        <div id="charts-container" class="row d-none">
-            <div class="col-lg-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">青果物</h5>
-                        <canvas id="vegetable-chart"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">畜産物</h5>
-                        <canvas id="meat-chart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Charts Container (Dynamically populated) -->
+        <div id="charts-container" class="row"></div>
 
         <!-- Error Message Area -->
         <div id="error-message" class="alert alert-danger d-none" role="alert">
