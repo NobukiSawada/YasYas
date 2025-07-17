@@ -1,81 +1,95 @@
 :root {
-    --primary-color: #4A90E2; /* A pleasant blue */
-    --secondary-color: #6A7FDB; /* A complementary purple-blue */
-    --background-light: #F8F9FA; /* Very light grey */
-    --text-dark: #343A40; /* Dark grey */
-    --card-bg: #FFFFFF; /* White */
-    --shadow-color: rgba(0, 0, 0, 0.1);
+    /* CSS変数でサイト全体のカラーパレットを定義します。 */
+    --primary-color: #4A90E2; /* 主要な青色。ナビゲーションバーや見出しに使用。 */
+    --secondary-color: #6A7FDB; /* 補完的な紫がかった青色。 */
+    --background-light: #F8F9FA; /* 非常に薄い灰色。背景色に使用。 */
+    --text-dark: #343A40; /* 濃い灰色。主要なテキスト色に使用。 */
+    --card-bg: #FFFFFF; /* カードの背景色。 */
+    --shadow-color: rgba(0, 0, 0, 0.1); /* シャドウの色。 */
 }
 
 body {
+    /* サイト全体のフォントと背景色を設定します。 */
     font-family: 'Noto Sans JP', sans-serif;
     background-color: var(--background-light);
     color: var(--text-dark);
 }
 
 h1 {
+    /* メインタイトルのスタイル。 */
     font-family: 'Mochiy Pop P One', cursive;
     color: var(--primary-color);
-    font-size: 2.8rem; /* Slightly larger for impact */
+    font-size: 2.8rem; /* 視覚的なインパクトのために少し大きく。 */
     margin-bottom: 0.5em;
 }
 
 .navbar {
-    background-color: var(--primary-color) !important; /* Use primary color for navbar */
-    box-shadow: 0 2px 4px var(--shadow-color);
+    /* ナビゲーションバーのスタイル。 */
+    background-color: var(--primary-color) !important; /* プライマリーカラーを背景に。 */
+    box-shadow: 0 2px 4px var(--shadow-color); /* 柔らかいシャドウ。 */
 }
 
 .navbar-brand {
+    /* ナビゲーションバーのブランド名（YasYas）のスタイル。 */
     font-family: 'Mochiy Pop P One', cursive;
-    font-size: 1.8rem; /* Adjusted for balance */
-    color: #FFFFFF !important;
+    font-size: 1.8rem; /* バランスのために調整。 */
+    color: #FFFFFF !important; /* 白色。 */
 }
 
 .card {
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    border: 1px solid #e0e0e0; /* Subtle border */
-    border-radius: 12px;
+    /* 各品目のグラフを表示するカードのスタイル。 */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* ホバー時のアニメーション。 */
+    border: 1px solid #e0e0e0; /* 微妙な境界線。 */
+    border-radius: 12px; /* 角を丸く。 */
     overflow: hidden;
     background-color: var(--card-bg);
-    box-shadow: 0 4px 8px var(--shadow-color); /* Softer shadow */
+    box-shadow: 0 4px 8px var(--shadow-color); /* 柔らかいシャドウ。 */
 }
 
 .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px var(--shadow-color); /* Slightly more pronounced on hover */
+    /* カードにマウスが乗った時のスタイル。 */
+    transform: translateY(-3px); /* 少し上に移動。 */
+    box-shadow: 0 6px 12px var(--shadow-color); /* シャドウを強調。 */
 }
 
 .card-title {
+    /* カード内の品目名のスタイル。 */
     color: var(--text-dark);
-    font-weight: 700; /* Noto Sans JP bold */
+    font-weight: 700; /* Noto Sans JPの太字。 */
     font-size: 1.3rem;
 }
 
 .text-success {
-    color: #28a745 !important; /* Green for positive change */
+    /* 価格上昇（良い変化）を示すテキストの色。 */
+    color: #28a745 !important; /* 緑色。 */
 }
 
 .text-danger {
-    color: #dc3545 !important; /* Red for negative change */
+    /* 価格下落（悪い変化）を示すテキストの色。 */
+    color: #dc3545 !important; /* 赤色。 */
 }
 
 footer {
+    /* フッターのスタイル。 */
     font-size: 0.9em;
-    background-color: var(--text-dark) !important; /* Dark grey for footer */
+    background-color: var(--text-dark) !important; /* 濃い灰色。 */
     color: #FFFFFF;
 }
 
 /* Adjust spacing for form elements */
 .form-select {
+    /* プルダウンメニューのスタイル。 */
     border-radius: 0.5rem;
 }
 
 .col-form-label {
+    /* フォームラベルのスタイル。 */
     font-weight: 500;
 }
 
 /* Category headings */
 h2 {
+    /* カテゴリ見出し（農産物、畜産物）のスタイル。 */
     color: var(--primary-color);
     font-weight: 700;
     margin-top: 2rem;
@@ -83,5 +97,6 @@ h2 {
 }
 
 hr {
+    /* カテゴリ見出しの下の区切り線のスタイル。 */
     border-top: 1px solid #e0e0e0;
 }
